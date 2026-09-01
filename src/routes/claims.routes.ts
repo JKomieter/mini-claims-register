@@ -1,9 +1,10 @@
 import { Router } from "express";
+import { getClaims } from "../controllers/claims.controller";
 
 const router = Router();
 
 // List all claims with filtering (`startDate`, `endDate`, `status`, `currency`) & totals footer summary
-router.get("/")
+router.get("/", getClaims)
 
 // Fetch a single claim, its full payment history, and calculated status/balance
 router.get("/:id");

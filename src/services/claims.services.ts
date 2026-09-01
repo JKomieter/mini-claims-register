@@ -2,11 +2,14 @@ import supabase from "../config/supabase";
 import { Claim } from "../models/claim";
 import { Total } from "../types";
 
+const PAGE_SIZE = 15;
+
 /**
  * Fetches claims based on the provided filters and aggregate totals grouped by currency.
  * @param filters 
  */
 export async function fetchClaims(filters: {
+    page?: number;
     startDate?: string;
     endDate?: string;
     status?: string;
@@ -25,6 +28,12 @@ export async function fetchClaims(filters: {
     }
     if (filters.currency) {
         query.eq("currency", filters.currency);
+    }
+    if (filters.page) {
+        const offset = (filters.page - 1) * PAGE_SIZE;
+        query.range(offset, offset + PAGE_SIZE - 1);
+    } else {
+        query.range(0, PAGE_SIZE - 1);
     }
 
     const { data: claims, error: claimsError } = await query;
