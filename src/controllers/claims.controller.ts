@@ -63,12 +63,15 @@ export async function getClaimById(req: Request, res: Response, next: NextFuncti
 export async function createClaim(req: Request, res: Response, next: NextFunction) {
     try {
         // Extract claim details from the request body
-        const { policyNumber, insuredName, lossDate, dateNotified, lossNature, currency, estimatedLossAmount } = req.body;
+        const { insuredName, lossDate, dateNotified, lossNature, currency, estimatedLossAmount } = req.body;
 
         // Validate required fields
-        if (!policyNumber || !insuredName || !lossDate || !dateNotified || !lossNature || !currency || !estimatedLossAmount) {
+        if (!insuredName || !lossDate || !dateNotified || !lossNature || !currency || !estimatedLossAmount) {
             return res.status(400).json({ error: "Missing required claim details." });
         }
+
+        // Generate a unique policy number 
+        const policyNumber = `POL-${Math.floor(Math.random() * 1000000)}`;
 
         // Insert the new claim into the database
         const { data, error } = await supabase.from("claims").insert({
