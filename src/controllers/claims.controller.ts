@@ -1,7 +1,20 @@
 import { Request, Response, NextFunction } from 'express';
-import { fetchClaimById, fetchClaims } from '../services/claims.services';
+import { fetchClaimById, fetchClaims, fetchClaimsMetrics } from '../services/claims.services';
 import supabase from '../config/supabase';
 import { Payment } from '../models/payment';
+
+/**
+ * Handles the GET request for dashboard metrics.
+ * Returns only the total claim count and grouped totals summary.
+ */
+export async function getClaimsMetrics(req: Request, res: Response, next: NextFunction) {
+    try {
+        const metrics = await fetchClaimsMetrics();
+        res.json(metrics);
+    } catch (error) {
+        next(error);
+    }
+}
 
 /**
  * Handles the GET request to fetch claims with optional filters and pagination.

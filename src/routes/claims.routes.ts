@@ -1,7 +1,10 @@
 import { Router } from "express";
-import { approveClaim, createClaim, getClaimById, getClaimPayments, getClaims } from "../controllers/claims.controller";
+import { approveClaim, createClaim, getClaimById, getClaimPayments, getClaims, getClaimsMetrics } from "../controllers/claims.controller";
 
 const router = Router();
+
+// Metrics summary: count + totals, without full claim rows
+router.get("/metrics", getClaimsMetrics)
 
 // List all claims with filtering (`startDate`, `endDate`, `status`, `currency`) & totals footer summary
 router.get("/", getClaims)
