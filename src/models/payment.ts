@@ -7,7 +7,6 @@ export interface Payment {
     payment_date: string;
     payment_currency: Currency;
     payment_amount: number;
-    exchange_rate: number;
     reference_note: string | null;
     amount_in_claim_currency: number;
     created_at: string;
