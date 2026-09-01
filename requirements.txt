@@ -1,0 +1,36 @@
+THE PROJECT — MINI CLAIMS REGISTER
+
+Build and host a small web application that records insurance claims and the payments made against them.
+
+Core requirements
+
+1. Register a claim, capturing policy number, insured name, loss date, date notified, loss nature, currency, and an estimated loss amount.
+2. Record one or more payments against a claim, each with its own date, amount and currency.
+3. Show, for every claim, the approved amount, the total paid, and the outstanding balance (approved less paid).
+4. Derive a status for each claim:
+- Reserved, not yet settled — no approved amount has been set
+- Settled, payment outstanding — an approved amount is set and the balance is still above zero
+- Settled and paid — the balance is zero or below
+5. Provide a list view with filters on date range, status and currency, and a totals row at the foot. Totals must be grouped by currency.
+6. Seed the application with at least fifteen sample claims, so the list and the totals are worth looking at.
+
+What we will be looking at
+
+- Whether the money arithmetic is correct, particularly in the totals row
+- How you handle a claim paid in a currency other than the one it was reserved in
+- Your data model and schema design
+- Readable code and a sensible commit history
+
+The stack is entirely your choice. Use whatever you are quickest in.
+
+Deliverables
+
+- A public GitHub repository
+- A live, hosted URL we can open without any setup on our side. Vercel, Render, Railway, Fly.io and similar free tiers are all fine.
+- A short README covering how to run it locally, the assumptions you made, and what you would do differently with more time
+
+Deadline: Monday, 7 September 2026, 5:00 PM GMT. Reply to this email with both links.
+
+If something in the brief is ambiguous, make a decision, write it down in the README, and carry on — that is part of the exercise. If you hit a genuine blocker, reply and ask.
+
+We are looking forward to seeing what you build.
