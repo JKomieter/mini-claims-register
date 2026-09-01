@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getClaimById, getClaims } from "../controllers/claims.controller";
+import { approveClaim, createClaim, getClaimById, getClaimPayments, getClaims } from "../controllers/claims.controller";
 
 const router = Router();
 
@@ -10,12 +10,12 @@ router.get("/", getClaims)
 router.get("/:id", getClaimById);
 
 // Register a new claim (`policyNumber`, `insuredName`, `lossDate`, `dateNotified`, `lossNature`, `currency`, `estimatedLossAmount`)
-router.post("/")
+router.post("/", createClaim)
 
 // Set or update the `approved_amount` for a claim (moves status out of "Reserved")
-router.patch(":id/approve")
+router.patch("/:id/approve", approveClaim)
 
 // Get all payments recorded for a specific claim |
-router.get("/:id/payments")
+router.get("/:id/payments", getClaimPayments)
 
 export default router;

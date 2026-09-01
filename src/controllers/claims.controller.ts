@@ -40,6 +40,13 @@ export async function getClaimById(req: Request, res: Response, next: NextFuncti
     }
 }
 
+/**
+ * Handles the POST request to create a new claim.
+ * @param req 
+ * @param res 
+ * @param next 
+ * @returns 
+ */
 export async function createClaim(req: Request, res: Response, next: NextFunction) {
     try {
         // Extract claim details from the request body
@@ -66,6 +73,59 @@ export async function createClaim(req: Request, res: Response, next: NextFunctio
         }
 
         res.status(201).json({ message: "Claim created successfully.", claimId: data[0].id });
+    } catch (error) {
+        next(error);
+    }
+}
+
+/**
+ * Handles the PATCH request to approve a claim by setting or updating the approved amount.
+ * @param req 
+ * @param res 
+ * @param next 
+ */
+export async function approveClaim(req: Request, res: Response, next: NextFunction) {
+    try {
+        const claimId = req.params.id;
+        const { approvedAmount } = req.body;
+
+        if (!approvedAmount) {
+            return res.status(400).json({ error: "Missing approved amount." });
+        }
+
+        // Update the claim with the approved amount
+        const { data, error } = await supabase.from("claims").update({
+            approved_amount: approvedAmount,
+        }).eq("id", claimId).select("id");
+
+        if (error) {
+            throw new Error(`Error approving claim: ${error.message}`);
+        }
+
+        res.json({ message: "Claim approved successfully.", claimId: data[0].id });
+    } catch (error) {
+        next(error);
+    }
+}
+
+/**
+ * Handles the GET request to fetch all payments recorded for a specific claim.
+ * @param req 
+ * @param res 
+ * @param next 
+ */
+export async function getClaimPayments(req: Request, res: Response, next: NextFunction) {
+    try {
+        const claimId = req.params.id;
+
+        // Fetch payments for the specific claim
+        const { data, error } = await supabase.from("payments").select("*").eq("claim_id", claimId);
+
+        if (error) {
+            throw new Error(`Error fetching payments: ${error.message}`);
+        }
+
+        res.json({ payments: data });
     } catch (error) {
         next(error);
     }
