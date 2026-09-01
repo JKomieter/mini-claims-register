@@ -1,7 +1,7 @@
 import { Currency } from "./claim";
 
 
-export interface ClaimPayment {
+export interface Payment {
     id: string;
     claim_id: string;
     payment_date: string;
