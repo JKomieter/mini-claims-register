@@ -3,7 +3,6 @@ import { Claim } from "../models/claim";
 import { Payment } from "../models/payment";
 import { Total } from "../types";
 
-const PAGE_SIZE = 15;
 
 /**
  * Fetches claims based on the provided filters and aggregate totals grouped by currency.
@@ -11,7 +10,6 @@ const PAGE_SIZE = 15;
  * @returns An object containing the list of claims and the aggregate totals.
  */
 export async function fetchClaims(filters: {
-    page?: number;
     startDate?: string;
     endDate?: string;
     status?: string;
@@ -31,16 +29,11 @@ export async function fetchClaims(filters: {
     if (filters.currency) {
         query.eq("currency", filters.currency);
     }
-    if (filters.page) {
-        const offset = (filters.page - 1) * PAGE_SIZE;
-        query.range(offset, offset + PAGE_SIZE - 1);
-    } else {
-        query.range(0, PAGE_SIZE - 1);
-    }
 
     const { data: claims, error: claimsError } = await query;
 
     if (claimsError) {
+        console.error(`Error fetching claims: `, claimsError)
         throw new Error(`Error fetching claims: ${claimsError.message}`);
     }
     
@@ -52,6 +45,7 @@ export async function fetchClaims(filters: {
     });
     
     if (totalsError) {
+        console.error("Error fetching claim totals: ", totalsError)
         throw new Error(`Error fetching claim totals: ${totalsError.message}`);
     }
 

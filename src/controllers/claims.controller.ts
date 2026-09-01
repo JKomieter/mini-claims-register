@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { fetchClaimById, fetchClaims } from '../services/claims.services';
 import supabase from '../config/supabase';
+import { Payment } from '../models/payment';
 
 /**
  * Handles the GET request to fetch claims with optional filters and pagination.
@@ -10,14 +11,13 @@ import supabase from '../config/supabase';
  */
 export async function getClaims(req: Request, res: Response, next: NextFunction) {
     try {
-        // get the query parameters for pagination
-        const page = parseInt(req.query.page as string) || 1;
+        // get the query parameters 
         const startDate = req.query.startDate as string | undefined;
         const endDate = req.query.endDate as string | undefined;
         const status = req.query.status as string | undefined;
         const currency = req.query.currency as string | undefined;
 
-        const { claims, totals } = await fetchClaims({ page, startDate, endDate, status, currency });
+        const { claims, totals } = await fetchClaims({ startDate, endDate, status, currency });
         res.json({ claims, totals });
     } catch (error) {
         next(error);
@@ -125,7 +125,7 @@ export async function getClaimPayments(req: Request, res: Response, next: NextFu
             throw new Error(`Error fetching payments: ${error.message}`);
         }
 
-        res.json({ payments: data });
+        res.json({ payments: data as Payment[] });
     } catch (error) {
         next(error);
     }

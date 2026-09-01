@@ -8,7 +8,8 @@
     "start": "node dist/server.js",
     "dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/server.ts",
     "lint": "eslint 'src/**/*.ts'",
-    "seed-claims": "npx ts-node src/seeds/claims.seeds.ts"
+    "seed-claims": "npx ts-node src/seeds/claims.seeds.ts",
+    "seed-payments": "npx ts-node src/seeds/payment.seed.ts"
   },
   "repository": {
     "type": "git",
