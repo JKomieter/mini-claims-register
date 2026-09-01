@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getClaims } from "../controllers/claims.controller";
+import { getClaimById, getClaims } from "../controllers/claims.controller";
 
 const router = Router();
 
@@ -7,7 +7,7 @@ const router = Router();
 router.get("/", getClaims)
 
 // Fetch a single claim, its full payment history, and calculated status/balance
-router.get("/:id");
+router.get("/:id", getClaimById);
 
 // Register a new claim (`policyNumber`, `insuredName`, `lossDate`, `dateNotified`, `lossNature`, `currency`, `estimatedLossAmount`)
 router.post("/")

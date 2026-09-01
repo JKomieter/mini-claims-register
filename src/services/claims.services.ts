@@ -1,5 +1,6 @@
 import supabase from "../config/supabase";
 import { Claim } from "../models/claim";
+import { Payment } from "../models/payment";
 import { Total } from "../types";
 
 const PAGE_SIZE = 15;
@@ -7,6 +8,7 @@ const PAGE_SIZE = 15;
 /**
  * Fetches claims based on the provided filters and aggregate totals grouped by currency.
  * @param filters 
+ * @returns An object containing the list of claims and the aggregate totals.
  */
 export async function fetchClaims(filters: {
     page?: number;
@@ -54,4 +56,32 @@ export async function fetchClaims(filters: {
     }
 
     return { claims: claims as Claim[], totals: totals as Total[] };
+}
+
+/**
+ * Fetches a single claim by its ID along with its payment history.
+ * @param claimId 
+ * @returns An object containing the claim details and its associated payments.
+ */
+export async function fetchClaimById(claimId: string) {
+    const { data: claim, error: claimError } = await supabase
+        .from("claims")
+        .select("*")
+        .eq("id", claimId)
+        .single();
+
+    if (claimError) {
+        throw new Error(`Error fetching claim by ID: ${claimError.message}`);
+    }
+
+    const { data: payments, error: paymentsError } = await supabase
+        .from("payments")
+        .select("*")
+        .eq("claim_id", claimId);
+
+    if (paymentsError) {
+        throw new Error(`Error fetching payments for claim ID ${claimId}: ${paymentsError.message}`);
+    }
+
+    return { claim: claim as Claim, payments: payments as Payment[] };
 }

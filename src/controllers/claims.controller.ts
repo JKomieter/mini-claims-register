@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { fetchClaims } from '../services/claims.services';
+import { fetchClaimById, fetchClaims } from '../services/claims.services';
 
 /**
  * Handles the GET request to fetch claims with optional filters and pagination.
@@ -18,6 +18,22 @@ export async function getClaims(req: Request, res: Response, next: NextFunction)
 
         const { claims, totals } = await fetchClaims({ page, startDate, endDate, status, currency });
         res.json({ claims, totals });
+    } catch (error) {
+        next(error);
+    }
+}
+
+/**
+ * Handles the GET request to fetch a single claim by its ID along with its payment history.
+ * @param req 
+ * @param res 
+ * @param next 
+ */
+export async function getClaimById(req: Request, res: Response, next: NextFunction) {
+    try {
+        const claimId = req.params.id ;
+        const claimDetails = await fetchClaimById(claimId as string);
+        res.json(claimDetails);
     } catch (error) {
         next(error);
     }
