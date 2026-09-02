@@ -21,7 +21,7 @@ A lightweight RESTful backend built with Node.js, Express, and Supabase PostgreS
   * `approved_amount != NULL` and `outstanding_balance > 0` → `"Settled, payment outstanding"`
   * `approved_amount != NULL` and `outstanding_balance <= 0` → `"Settled and paid"`
 * **Exchange Rate Formula:**
-  $$\text{amount\_in\_claim\_currency} = \text{payment\_amount} \times \text{exchange\_rate}$$
+  amount_in_claim_currency = payment_amount * exchange_rate
 
 ---
 
