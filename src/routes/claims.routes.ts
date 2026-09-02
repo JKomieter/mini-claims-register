@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { approveClaim, createClaim, getClaimById, getClaimPayments, getClaims, getClaimsMetrics } from "../controllers/claims.controller";
+import { approveClaim, createClaim, getClaimById, getClaimPayments, getClaims, getClaimsMetrics, updateClaim } from "../controllers/claims.controller";
 
 const router = Router();
 
@@ -18,7 +18,9 @@ router.post("/", createClaim)
 // Set or update the `approved_amount` for a claim (moves status out of "Reserved")
 router.patch("/:id/approve", approveClaim)
 
-// Get all payments recorded for a specific claim |
+// Get all payments recorded for a specific claim 
 router.get("/:id/payments", getClaimPayments)
+
+router.patch("/:id", updateClaim)
 
 export default router;

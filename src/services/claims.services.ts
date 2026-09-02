@@ -119,7 +119,7 @@ export async function fetchClaimById(claimId: string) {
     }
 
     const { data: payments, error: paymentsError } = await supabase
-        .from("payments")
+        .from("claim_payments")
         .select("*")
         .eq("claim_id", claimId);
 

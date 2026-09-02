@@ -136,13 +136,41 @@ export async function getClaimPayments(req: Request, res: Response, next: NextFu
         const claimId = req.params.id;
 
         // Fetch payments for the specific claim
-        const { data, error } = await supabase.from("payments").select("*").eq("claim_id", claimId);
+        const { data, error } = await supabase.from("claim_payments").select("*").eq("claim_id", claimId);
 
         if (error) {
             throw new Error(`Error fetching payments: ${error.message}`);
         }
 
         res.json({ payments: data as Payment[] });
+    } catch (error) {
+        next(error);
+    }
+}
+
+/**
+ * Handles the PATCH request to update an existing claim's details.
+ * @param req 
+ * @param res 
+ * @param next 
+ */
+export async function updateClaim(req: Request, res: Response, next: NextFunction) {
+    try {
+        const claimId = req.params.id;
+        const { insuredName, lossNature, approvedAmount } = req.body;
+
+        // Update the claim with the provided details
+        const { data, error } = await supabase.from("claims").update({
+            insured_name: insuredName,
+            loss_nature: lossNature,
+            approved_amount: approvedAmount,
+        }).eq("id", claimId).select("id");
+
+        if (error) {
+            throw new Error(`Error updating claim: ${error.message}`);
+        }
+
+        res.json({ message: "Claim updated successfully.", claimId: data[0].id });
     } catch (error) {
         next(error);
     }
