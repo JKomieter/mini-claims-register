@@ -63,7 +63,7 @@ export async function getClaimById(req: Request, res: Response, next: NextFuncti
 export async function createClaim(req: Request, res: Response, next: NextFunction) {
     try {
         // Extract claim details from the request body
-        const { insuredName, lossDate, dateNotified, lossNature, currency, estimatedLossAmount } = req.body;
+        const { insuredName, lossDate, dateNotified, lossNature, currency, estimatedLossAmount, approvedAmount } = req.body;
 
         // Validate required fields
         if (!insuredName || !lossDate || !dateNotified || !lossNature || !currency || !estimatedLossAmount) {
@@ -82,6 +82,7 @@ export async function createClaim(req: Request, res: Response, next: NextFunctio
             loss_nature: lossNature,
             currency: currency,
             estimated_loss_amount: estimatedLossAmount,
+            approved_amount: approvedAmount || null,
         }).select("id");
 
         if (error) {
