@@ -9,7 +9,7 @@ import supabase from '../config/supabase';
  */
 export async function recordPayment(req: Request, res: Response, next: NextFunction) {
     try {
-        const { claimId, amount, currency, exchangeRate } = req.body;
+        const { claimId, amount, currency, exchangeRate, referenceNote } = req.body;
 
         if (!claimId || !amount || !currency) {
             return res.status(400).json({ error: "Missing required fields." });
@@ -53,7 +53,7 @@ export async function recordPayment(req: Request, res: Response, next: NextFunct
                 payment_amount: numericAmount,
                 exchange_rate: finalExchangeRate,
                 amount_in_claim_currency: amountInClaimCurrency,
-                reference_note: req.body.referenceNote || null,
+                reference_note: referenceNote || null,
             })
             .select("id")
             .single();

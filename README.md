@@ -114,7 +114,7 @@ Create a `.env` file in the root directory:
 PORT=4000
 SUPABASE_URL=
 SUPABASE_SERVICE_ROLE_KEY=
-CORS_ORIGIN=http://localhost:3000
+CORS_ORIGIN=
 
 ```
 
